@@ -5,25 +5,113 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Let's Get Giphy</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
-    <script src="homework.js"></script>
+    <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" /> -->
+    <!-- <script src="homework.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
    
+    
 
   
 </head>
 <body>
+   
+<div class= "container">
+    <h1>Cartoon Search</h1>
+
+
+<div id="buttons-view" class = "btn btn-primary"></div>
+
+    <form id="giphyCartoon-form">
+            <label for="cartoon-input">Feel the Nostalgia!</label>
+            <input type="text" id="cartoon-input"><br>
+      
+            
+            <input id="add-cartoon" type="submit" value="Get some gifs">
+    </form>
+
+
+    <div id="empty-div"></div>
+
+
     <script type="text/javascript">
 
-    var queryURL = ""
+    var somethingCool = ["Spongebob","Katara","Batman","Static Shock","Danny Phantom"];
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q="+ search + "&api_key=RsZ7n96ih4DD7RHArHWtKjGeYkENCDuI&limit=10&rating=g";
+    var search = $("#cartoon-input").val().trim();
 
-
-    // ajax call to the giph API
-
-    $.ajax({
-      
-    })
-    </script>
+function makeButtons(){
     
+      $("#buttons-view").empty();
+
+// loop for the array to make buttons and create them dynamically
+       for (var i = 0; i < somethingCool.length; i++) {
+
+       var a = $("<button>").attr("value", search);
+
+           a.addClass("cartoon btn btn-primary");
+
+           a.attr("data-name", somethingCool[i]);
+
+           a.text(somethingCool[i]);
+
+           $("#buttons-view").append(a);
+    }
+}
+
+makeButtons();
+
+
+ // ajax call to the giph API
+    $.ajax({
+      url: queryURL,
+      method: "GET"
+    }).then(function(response){
+
+             //creates div for my theme
+            var cartoons = $("<button class='cartoons'>").append(search);
+
+            console.log(response);
+            console.log(response.data)
+        
+             //uses the API and returns the gif
+            var giffy = response.data
+            
+            var image = $("<img>").attr("src", giffy);
+
+
+           $("#add-cartoon").on("click", function(event) {
+       
+                      event.preventDefault();
+                      cartoons.append(image);
+                      cartoons.text(search);
+
+
+        // Adding the movie from the textbox to our array
+                      somethingCool.push(search);
+
+                    $("#buttons-view").append(cartoons);
+
+                       
+                
+
+      });
+      
+
+    });
+
+    
+//could not figure out how to make the name of the new buttons appear
+
+//also need to correctly call forth the API
+
+//used excercies 7 and 10 of weeks 6 to code the logic, but could not figure out where the disconnect was happening
+
+// upon further observations, I think I have an issue with scopr, but I cannort think of a clean way to fix the issue
+    
+
+    
+
+    </script>
+  </div>
 </body>
 </html>
